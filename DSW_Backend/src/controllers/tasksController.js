@@ -1,32 +1,13 @@
-const tasksModel = require('../models/tasksModel');
-
-const getAll = async (_request, response) => {
-  const tasks = await tasksModel.getAll();
-  return response.status(200).json(tasks);
+exports.post = (req, res, next) => {
+  res.status(201).send('Requisição recebida com sucesso!');
 };
 
-const createTask = async (request, response) => {
-  const createdTask = await tasksModel.createTask(request.body);
-  return response.status(201).json(createdTask);
+exports.put = (req, res, next) => {
+  let id = req.params.id;
+  res.status(201).send(`Requisição recebida com sucesso! ${id}`);
 };
 
-const deleteTask = async (request, response) => {
-  const { id } = request.params;
-
-  await tasksModel.deleteTask(id);
-  return response.status(204).json();
-};
-
-const updateTask = async (request, response) => {
-  const { id } = request.params;
-
-  await tasksModel.updateTask(id, request.body);
-  return response.status(204).json();
-};
-
-module.exports = {
-  getAll,
-  createTask,
-  deleteTask,
-  updateTask,
+exports.delete = (req, res, next) => {
+  let id = req.params.id;
+  res.status(200).send(`Requisição recebida com sucesso! ${id}`);
 };
