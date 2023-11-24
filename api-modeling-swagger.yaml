@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: API de Automação de Irrigação
+  description: API para controlar a irrigação em ambientes de cultivo de alface em ambiente protegido.
+  version: 1.0.0
+paths:
+  /status:
+    get:
+      summary: Verifica o status da irrigação
+      description: Obtém o status atual do sistema de irrigação.
+      responses:
+        200:
+          description: Status da irrigação obtido com sucesso
+          content:
+            application/json:
+              example:
+                umidade: 65
+                temperatura_ambiente: 25
+                irrigacao_ativa: true
+  /controle:
+    post:
+      summary: Controla o sistema de irrigação
+      description: Liga ou desliga o sistema de irrigação no modo manual.
+      requestBody:
+        content:
+          application/json:
+            example:
+              modo: manual
+              acao: ligar
+      responses:
+        200:
+          description: Ação executada com sucesso
+          content:
+            application/json:
+              example:
+                mensagem: "Sistema de irrigação ligado no modo manual"
+  /configuracao:
+    get:
+      summary: Obtém a configuração da irrigação
+      description: Obtém a configuração atual do modo de controle e ação do sistema de irrigação.
+      responses:
+        200:
+          description: Configuração de irrigação obtida com sucesso
+          content:
+            application/json:
+              example:
+                controle:
+                  modo: manual
+                  acao: ligar
+  /relatorios:
+    get:
+      summary: Obtém o histórico de irrigações
+      description: Obtém o histórico das irrigações anteriores.
+      responses:
+        200:
+          description: Histórico de irrigações obtido com sucesso
+          content:
+            application/json:
+              example:
+                relatorios:
+                  - data: "2023-10-15 08:00"
+                    umidade: 60
+                    temperatura: 26
+                  - data: "2023-10-14 07:30"
+                    umidade: 55
+                    temperatura: 25
+  /relatorios/{dataHora}:
+    delete:
+      summary: Exclui um relatório específico
+      description: Exclui uma entrada específica do histórico de irrigações com base na data e hora da irrigação.
+      parameters:
+        - name: dataHora
+          in: path
+          description: Data e hora da irrigação a ser excluída
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Relatório excluído com sucesso
+          content:
+            application/json:
+              example:
+                mensagem: "Relatório excluído com sucesso"
+        404:
+          description: Relatório não encontrado
+          content:
+            application/json:
+              example:
+                erro: "Relatório não encontrado"
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        umidade:
+          type: number
+          description: Umidade atual
+        temperatura_ambiente:
+          type: number
+          description: Temperatura ambiente atual
+        irrigacao_ativa:
+          type: boolean
+          description: Indica se a irrigação está ativa (true) ou não (false)
+    Controle:
+      type: object
+      properties:
+        modo:
+          type: string
+          description: Modo de controle da irrigação (automático ou manual)
+        acao:
+          type: string
+          description: Ação de controle (ligar ou desligar) no modo manual
+    Relatorio:
+      type: object
+      properties:
+        data:
+          type: string
+          format: date-time
+          description: Data e hora da irrigação
+        umidade:
+          type: number
+          description: Umidade no momento da irrigação
+        temperatura:
+          type: number
+          description: Temperatura no momento da irrigação
