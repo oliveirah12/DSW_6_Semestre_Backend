@@ -62,6 +62,7 @@ module.exports = {
       response.status(400).send(error);
     }
   },
+
   async delete(request,response){
     const estufaId = request.params.id;
 
