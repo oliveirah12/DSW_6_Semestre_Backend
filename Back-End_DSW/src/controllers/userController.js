@@ -10,13 +10,20 @@ class userController {
 
     async create(request, response){
 
-        const {login, senha} = request.body
+        const {login, senha, senhaConfirmation} = request.body
 
         if(!login){
             return response.status(422).json({msg : 'Login obrigatório'})
         }
         if(!senha){
             return response.status(422).json({msg : 'Senha obrigatória'})
+        }
+        console.log(request.body)
+        console.log(senha)
+        console.log(senhaConfirmation)
+
+        if(senha != senhaConfirmation){
+            return response.status(423).json({msg : 'Senhas não coincidem'})
         }
 
         const userExist = await User.findOne({login: login})
@@ -46,6 +53,7 @@ class userController {
     async login(request, response){
 
         const {login, senha} = request.body
+        //const { authorization } = request.headers
 
         if(!login){
             return response.status(422).json({msg : 'Login obrigatório'})
@@ -88,6 +96,7 @@ class userController {
     checkToken(request, response, next){
         const authHeader = request.headers['authorization']
         const token = authHeader && authHeader.split(" ")[1]
+        console.log(token + ' - Linha 92')
 
         if(!token){
             return response.status(401).json({msg: 'Acesso negado'})
