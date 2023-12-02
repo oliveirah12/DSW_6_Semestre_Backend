@@ -5,7 +5,19 @@ const relatorioController = require('../controllers/relatorioController')
 const controlesController = require('../controllers/controlesController')
 const estufaController = require('../controllers/estufaController')
 const userController = require('../controllers/userController')
+const { default: axios } = require('axios')
 
+
+const verificaToken = async () =>{
+    const urlToken = 'http://localhost:5000/auth/token'
+
+    try {
+        const response = await axios.get(urlToken)
+        console.log(response)
+    } catch (error) {
+        
+    }
+}
 
 
 // Rotas para relatórios
@@ -23,15 +35,12 @@ router.get('/controlesIrrigacao/', userController.checkToken, controlesControlle
 
 
 //Rotas de Estufas
-router.get('/estufas/', userController.checkToken, estufaController.all)
+router.get('/estufas/', verificaToken, estufaController.all)
 router.delete('/deleteestufa/:id',userController.checkToken, estufaController.delete)
 router.post('/addestufa', userController.checkToken, estufaController.create)
 
 
 
-//Rotas User
-router.post('/auth/register', userController.create)
-router.post('/auth/login', userController.login)
-//router.post('/auth/logout', userController.logout)
+
 
 module.exports = router

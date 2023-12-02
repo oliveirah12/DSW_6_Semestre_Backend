@@ -16,14 +16,14 @@ const dbUser = process.env.DB_USER
 const dbPass = process.env.DB_PASS
 
 
-const mongoosePort = 5000
-mongoose
-    .connect(`mongodb+srv://${dbUser}:${dbPass}@estufausuarios.txzejpr.mongodb.net/?retryWrites=true&w=majority`)
-    .then(() => {
-        app.listen(mongoosePort)
-        console.log(`MONGOOSE Conectado - Porta ${mongoosePort}`)
-    })
-.catch((error) => console.log(error))
+// const mongoosePort = 5000
+// mongoose
+//     .connect(`mongodb+srv://${dbUser}:${dbPass}@estufausuarios.txzejpr.mongodb.net/?retryWrites=true&w=majority`)
+//     .then(() => {
+//         app.listen(mongoosePort)
+//         console.log(`MONGOOSE Conectado - Porta ${mongoosePort}`)
+//     })
+// .catch((error) => console.log(error))
 
 
 
