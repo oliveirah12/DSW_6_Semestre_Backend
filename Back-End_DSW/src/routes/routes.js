@@ -8,36 +8,44 @@ const userController = require('../controllers/userController')
 const { default: axios } = require('axios')
 
 
-const verificaToken = async () =>{
-    const urlToken = 'http://localhost:5000/auth/token'
+const verificaToken = async (req, res, next) => {
+    const urlToken = 'http://localhost:5000/auth/token';
 
     try {
-        const response = await axios.get(urlToken)
-        console.log(response)
-    } catch (error) {
+        const token = req.headers.authorization.split(' ')[1];
+        const response = await axios.get(urlToken, { headers: { Authorization: token } });
         
+        if (response.data.isValidToken) {
+            next();
+        } else {
+            res.status(401).json({ msg: 'Token inválido' });
+        }
+        
+    } catch (error) {
+
+        res.status(401).json({ msg: 'Falha na autenticação' });
     }
-}
+};
 
 
 // Rotas para relatórios
-router.get('/relatorio', userController.checkToken, relatorioController.all);
-router.get('/relatorios',userController.checkToken, relatorioController.one);
-router.delete('/deleterelatorio/:id', userController.checkToken, relatorioController.delete);
+router.get('/relatorio', verificaToken, relatorioController.all);
+router.get('/relatorios',verificaToken, relatorioController.one);
+router.delete('/deleterelatorio/:id', verificaToken, relatorioController.delete);
 
 
 
 //Rotas Controles
-router.put('/ligar/controles/:id', userController.checkToken, controlesController.ligarControle)
-router.put('/desligar/controles/:id', userController.checkToken, controlesController.desligarControle)
-router.get('/controlesIrrigacao/', userController.checkToken, controlesController.listarControles)
+router.put('/ligar/controles/:id', verificaToken, controlesController.ligarControle)
+router.put('/desligar/controles/:id', verificaToken, controlesController.desligarControle)
+router.get('/controlesIrrigacao/', verificaToken, controlesController.listarControles)
 
 
 
 //Rotas de Estufas
 router.get('/estufas/', verificaToken, estufaController.all)
-router.delete('/deleteestufa/:id',userController.checkToken, estufaController.delete)
-router.post('/addestufa', userController.checkToken, estufaController.create)
+router.delete('/deleteestufa/:id',verificaToken, estufaController.delete)
+router.post('/addestufa', verificaToken, estufaController.create)
 
 
 
