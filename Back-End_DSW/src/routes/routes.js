@@ -4,7 +4,6 @@ const router = express.Router()
 const relatorioController = require('../controllers/relatorioController')
 const controlesController = require('../controllers/controlesController')
 const estufaController = require('../controllers/estufaController')
-const userController = require('../controllers/userController')
 const { default: axios } = require('axios')
 
 
