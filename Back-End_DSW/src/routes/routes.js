@@ -12,7 +12,9 @@ const verificaToken = async (req, res, next) => {
 
     try {
         const token = req.headers.authorization.split(' ')[1];
+        console.log(token + 'Backend Antes de chamar Auth')
         const response = await axios.get(urlToken, { headers: { Authorization: token } });
+        console.log(token + 'Backend Após chamar Auth')
         
         if (response.data.isValidToken) {
             next();
@@ -42,7 +44,7 @@ router.get('/controlesIrrigacao/', verificaToken, controlesController.listarCont
 
 
 //Rotas de Estufas
-router.get('/estufas/', verificaToken, estufaController.all)
+router.get('/estufas', verificaToken, estufaController.all)
 router.delete('/deleteestufa/:id',verificaToken, estufaController.delete)
 router.post('/addestufa', verificaToken, estufaController.create)
 
