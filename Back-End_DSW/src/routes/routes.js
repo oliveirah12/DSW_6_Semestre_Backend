@@ -12,19 +12,23 @@ const verificaToken = async (req, res, next) => {
 
     try {
         const token = req.headers.authorization.split(' ')[1];
-        console.log(token + 'Backend Antes de chamar Auth')
+        console.log(token + ' - Backend Antes de chamar Auth')
         const response = await axios.get(urlToken, { headers: { Authorization: token } });
-        console.log(token + 'Backend Após chamar Auth')
+        console.log(token + ' - Backend Após chamar Auth')
+        
         
         if (response.data.isValidToken) {
             next();
         } else {
+            console.log('ELSE Linha 23: ' + token)
+            console.log(response)
             res.status(401).json({ msg: 'Token inválido' });
         }
         
     } catch (error) {
 
         res.status(401).json({ msg: 'Falha na autenticação' });
+        console.log('Linha 28 - ERROR: ', error)
     }
 };
 
